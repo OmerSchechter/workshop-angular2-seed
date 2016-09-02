@@ -18,7 +18,10 @@ export class TodoInputComponent {
 
   constructor(private todoListService: TodoListService) {}
 
-  addItem(inputElement) {
+  addItem(inputElement): void {
+    // It is not best practice to change element's property directly.
+    // (Avoid passing the element reference itself to a method.)
+    // Better install angular/forms and use FormsModule's ngModel.
     this.todoListService.addItem(inputElement.value);
     inputElement.value = '';
   }

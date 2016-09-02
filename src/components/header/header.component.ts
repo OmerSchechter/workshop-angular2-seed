@@ -14,6 +14,6 @@ import { Component } from '@angular/core';
 
 export class HeaderComponent {
 
-  title: string = 'Todos';
+  private title: string = 'Todos';
 
 }

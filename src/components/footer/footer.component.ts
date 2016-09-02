@@ -20,9 +20,9 @@ export class FooterComponent {
 
   constructor(private todoListService: TodoListService) {}
 
-  getCountMessage() {
-    const incomplete = this.todoListService.getIncompleteCount();
-    const total = this.todoListService.getTotalCount();
+  getCountMessage(): string {
+    const incomplete: number = this.todoListService.getIncompleteCount();
+    const total: number = this.todoListService.getTotalCount();
 
     return `
       ${incomplete === 0 ? 'no' : incomplete} 
@@ -30,7 +30,7 @@ export class FooterComponent {
       `;
   }
 
-  clearCompleted() {
+  clearCompleted(): void {
     this.todoListService.removeCompleted();
   }
 

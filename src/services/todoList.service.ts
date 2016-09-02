@@ -1,48 +1,46 @@
+import { TodoItem } from '../models/todo-item.model';
+
 export class TodoListService {
 
-  todoList = [
-    { title: 'RSVP Yes', completed: true, editing: false },
-    { title: 'Set up environment', completed: true, editing: false },
-    { title: 'Clone project', completed: false, editing: false },
-    { title: 'Come to meetup', completed: false, editing: false },
+  private todoList: Array<TodoItem> = [
+    new TodoItem('RSVP Yes', true, false),
+    new TodoItem('Set up environment', true, false),
+    new TodoItem('Clone project', false, false),
+    new TodoItem('Come to meetup', false, false),
   ];
 
-  getTodoList() {
+  getTodoList(): Array<TodoItem> {
     return this.todoList;
   }
 
-  removeItem(item) {
+  removeItem(item: TodoItem): void {
     const index = this.todoList.indexOf(item);
     this.todoList.splice(index, 1);
   }
 
-  clearEditing() {
+  clearEditing(): void {
     this.todoList.forEach((listItem) => listItem.editing = false);
   }
 
-  addItem(title) {
-    this.todoList.push({
-      title,
-      completed: false,
-      editing: false
-    });
+  addItem(title: string): void {
+    this.todoList.push(new TodoItem(title));
   }
 
-  getIncomplete() {
+  getIncomplete(): Array<TodoItem> {
     return this.todoList.filter((item) => {
       return !item.completed;
     })
   }
 
-  getIncompleteCount() {
+  getIncompleteCount(): number {
     return this.getIncomplete().length;
   }
 
-  getTotalCount() {
+  getTotalCount(): number {
     return this.todoList.length;
   }
 
-  removeCompleted() {
+  removeCompleted(): void {
     const incomplete = this.getIncomplete();
     this.todoList.splice(0, this.todoList.length);
     this.todoList.push(...incomplete);

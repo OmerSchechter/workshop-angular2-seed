@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TodoListService } from '../../services/todoList.service';
+import { TodoItem } from '../../models/todo-item.model';
 
 @Component({
   selector: 'aah-todo-list',
@@ -8,30 +9,31 @@ import { TodoListService } from '../../services/todoList.service';
   template: `
     <ul class="todo-list">
 
-      <aah-todo-item *ngFor="let item of todoList"
-                     [item]="item"
-                     (destroy)="destroyItem($event)"
-                     (editing)="editItem()">
+      <aah-todo-item *ngFor="let todoItem of todoList"
+                     [item]="todoItem"
+                     (destroy)="destroyItem(todoItem)"
+                     (editing)="clearEditing()">
       </aah-todo-item>
 
     </ul>
   `
 })
 
-export class TodoListComponent {
-  todoList;
+export class TodoListComponent implements OnInit {
+  private todoList: Array<TodoItem>;
 
   constructor(private todoListService: TodoListService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.todoList = this.todoListService.getTodoList();
   }
 
-  destroyItem(item) {
+  destroyItem(item: TodoItem): void {
     this.todoListService.removeItem(item);
   }
 
-  editItem() {
+  // See comment in TodoItemComponent.editItem()
+  clearEditing(): void {
     this.todoListService.clearEditing();
   }
 }

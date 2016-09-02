@@ -1,10 +1,9 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TodoItem } from '../../models/todo-item.model';
 
 @Component({
   selector: 'aah-todo-item',
   styleUrls: ['./todo-item.component.css'],
-  inputs: ['item'],
-  outputs: ['destroy', 'editing'],
 
   template: `
     <li [ngClass]="{completed: item.completed, editing: item.editing}">
@@ -32,29 +31,35 @@ import { Component, EventEmitter } from '@angular/core';
 })
 
 export class TodoItemComponent {
-  item;
-  destroy = new EventEmitter();
-  editing = new EventEmitter();
+  @Input() item: TodoItem;
+  @Output() destroy: EventEmitter<any> = new EventEmitter();
+  @Output() editing: EventEmitter<any> = new EventEmitter();
 
-  changeCompleted(checked) {
+  changeCompleted(checked: boolean): void {
     this.item.completed = checked;
   }
   
-  destroyItem() {
+  destroyItem(): void {
     this.destroy.emit(this.item);
   }
-
-  editItem() {
+  
+  editItem(): void {
+    // since the input is not focused on when it reveals, 
+    // we need to tell the parent to set all other items
+    // to editing = false.
+    // this will be refactored when we'll use a directive
+    // to set autofocus on the input, 
+    // and then we could use (blur)="cancelEdit()"
     this.editing.emit(this.item);
     this.item.editing = true;
   }
 
-  changeTitle(newTitle) {
+  changeTitle(newTitle: string): void {
     this.item.title = newTitle;
     this.item.editing = false;
   }
 
-  cancelEdit() {
+  cancelEdit(): void {
     this.item.editing = false;
   }
 }
